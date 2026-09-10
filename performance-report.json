@@ -1,0 +1,25 @@
+{
+  "original_html_bytes": 1426963,
+  "optimized_html_bytes": 299216,
+  "base64_webp_occurrences": 4,
+  "unique_webp_assets": 3,
+  "externalized_asset_bytes": 639026,
+  "assets": {
+    "c1b7e226496bbba38c673c73c8a6c78b5977ec6722f4d6d5c6df8b2c87ade79c": {
+      "name": "ch-c1b7e226496bbba3.webp",
+      "bytes": 208370,
+      "uses": 2
+    },
+    "6b02f355cdfa82d261c26f7678a94c66b9649bb07611b931cb8de3a26a3ac55f": {
+      "name": "ch-6b02f355cdfa82d2.webp",
+      "bytes": 241290,
+      "uses": 1
+    },
+    "3b96d6910481c50ded5338c1e80d2bccb1bb6818fd5dca4d71270fdf7262d295": {
+      "name": "ch-3b96d6910481c50d.webp",
+      "bytes": 189366,
+      "uses": 1
+    }
+  },
+  "saved_html_bytes": 1127747
+}
