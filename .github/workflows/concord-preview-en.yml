@@ -1,0 +1,47 @@
+name: Concord preview English completion
+
+on:
+  push:
+    branches:
+      - "preview/concord-interactivity-20260910"
+    paths:
+      - ".preview/apply-en"
+
+permissions:
+  contents: write
+
+jobs:
+  complete-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Add English interaction copy
+        run: python .preview/add_en.py
+      - name: Validate all three languages
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          b=Path('index.html').read_bytes()
+          checks=[b'const engineCopy=',b'const quizCopy=',b"en:{core:'Economic engine of the system'",'Three questions before a decision'.encode(), 'Три вопроса перед решением'.encode(), 'Чечимдин алдындагы үч суроо'.encode()]
+          assert all(x in b for x in checks)
+          assert b.count(b'id="ch-interactive-revision-css"') == 1
+          assert b.count(b'id="ch-interactive-revision-js"') == 1
+          print('RU/KY/EN validation passed')
+          PY
+      - name: Save exact multilingual preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: concord-house-interactive-preview-final
+          path: index.html
+          if-no-files-found: error
+      - name: Commit only final preview index
+        run: |
+          git config user.name "Concord House Preview Bot"
+          git config user.email "actions@users.noreply.github.com"
+          rm -rf .preview
+          rm -f .github/workflows/concord-preview-en.yml
+          git add -A
+          git commit -m "Complete RU KY EN interactive preview"
+          git push origin HEAD:"preview/concord-interactivity-20260910"
