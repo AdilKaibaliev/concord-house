@@ -1,0 +1,27 @@
+name: Localize share preview
+on:
+  push:
+    branches:
+      - preview/concord-performance-20260910
+    paths:
+      - .github/workflows/localize-share-preview.yml
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply language and sharing patch
+        run: python .tmp/localize_share.py
+      - name: Commit generated language routes
+        run: |
+          rm -f .tmp/localize_share.py .github/workflows/localize-share-preview.yml
+          rmdir .tmp 2>/dev/null || true
+          git config user.name "AdilKaibaliev"
+          git config user.email "156720853+AdilKaibaliev@users.noreply.github.com"
+          git add -A
+          git commit -m "Localize English copy and add language-specific share routes"
+          git push
