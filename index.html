@@ -282,9 +282,10 @@ button,a{touch-action:manipulation}
 }
 @media (max-width: 820px){
   /* Lower compositor cost on mobile while retaining the glass appearance. */
-  [class*="glass"], [class*="Glass"]{
-    -webkit-backdrop-filter: blur(8px) !important;
-    backdrop-filter: blur(8px) !important;
+  nav{ -webkit-backdrop-filter:blur(10px)!important; backdrop-filter:blur(10px)!important; }
+  section:not(.hero){ -webkit-backdrop-filter:none!important; backdrop-filter:none!important; }
+  .stat,.toggle-stage,.calc-controls,.calc-results,.case-pane,.step,.gov-pane,.principle,.legacy-card,.cta-card,.vision-shell{
+    -webkit-backdrop-filter:blur(6px)!important; backdrop-filter:blur(6px)!important;
   }
 }
 @media (prefers-reduced-motion: reduce){
@@ -386,7 +387,7 @@ function renderFit(){}
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}),{threshold:.12});qa('.reveal').forEach(x=>io.observe(x));
 window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;q('#progress').style.width=(scrollY/h*100)+'%'});
 // animated network canvas
-const cv=q('#heroCanvas'),ctx=cv.getContext('2d');let pts=[];function resize(){const d=window.devicePixelRatio||1;cv.width=innerWidth*d;cv.height=Math.max(innerHeight,850)*d;cv.style.width=innerWidth+'px';cv.style.height=Math.max(innerHeight,850)+'px';ctx.setTransform(d,0,0,d,0,0);pts=Array.from({length:Math.min(80,Math.floor(innerWidth/18))},()=>({x:Math.random()*innerWidth,y:Math.random()*Math.max(innerHeight,850),vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:Math.random()*1.4+.4}))}function draw(){ctx.clearRect(0,0,innerWidth,Math.max(innerHeight,850));for(const p of pts){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>innerWidth)p.vx*=-1;if(p.y<0||p.y>Math.max(innerHeight,850))p.vy*=-1;ctx.fillStyle='rgba(230,180,95,.34)';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const a=pts[i],b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);if(d<125){ctx.strokeStyle=`rgba(113,210,193,${(1-d/125)*.08})`;ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}requestAnimationFrame(draw)}window.addEventListener('resize',resize);resize();draw();
+const cv=q('#heroCanvas'),ctx=cv.getContext('2d');let pts=[],heroActive=true;const heroHost=cv.closest('.hero');if('IntersectionObserver' in window&&heroHost)new IntersectionObserver(([e])=>{heroActive=e.isIntersecting},{rootMargin:'120px 0px'}).observe(heroHost);function resize(){const d=Math.min(window.devicePixelRatio||1,innerWidth<900?1:1.5);cv.width=innerWidth*d;cv.height=Math.max(innerHeight,850)*d;cv.style.width=innerWidth+'px';cv.style.height=Math.max(innerHeight,850)+'px';ctx.setTransform(d,0,0,d,0,0);pts=Array.from({length:Math.min(60,Math.floor(innerWidth/22))},()=>({x:Math.random()*innerWidth,y:Math.random()*Math.max(innerHeight,850),vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:Math.random()*1.4+.4}))}function draw(){if(!heroActive||document.hidden||document.body.classList.contains('motion-off')){requestAnimationFrame(draw);return}ctx.clearRect(0,0,innerWidth,Math.max(innerHeight,850));for(const p of pts){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>innerWidth)p.vx*=-1;if(p.y<0||p.y>Math.max(innerHeight,850))p.vy*=-1;ctx.fillStyle='rgba(230,180,95,.34)';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const a=pts[i],b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);if(d<125){ctx.strokeStyle=`rgba(113,210,193,${(1-d/125)*.08})`;ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}requestAnimationFrame(draw)}window.addEventListener('resize',resize);resize();draw();
 applyLang(['ru','ky','en'].includes(localStorage.getItem('concordhouse-lang')) ? localStorage.getItem('concordhouse-lang') : 'en');renderArch(0);renderMechanism(0);renderCase('ace');renderVision(0);renderGov('board');calc();
 
 
@@ -394,7 +395,7 @@ applyLang(['ru','ky','en'].includes(localStorage.getItem('concordhouse-lang')) ?
   const root=document.documentElement, body=document.body, canvas=document.getElementById('cinematicCanvas');
   if(!canvas) return;
   const ctx=canvas.getContext('2d');
-  let W=0,H=0,dpr=1,t=0,last=performance.now(),motion=true,scene='hero';
+  let W=0,H=0,dpr=1,t=0,last=performance.now(),lastFrame=0,motion=true,scene='hero';
   let stars=[],routes=[];
   const sceneSpeed={hero:1,why:.65,model:1.15,economics:1.75,cases:.55,future:1.05,roadmap:.9,governance:.28,legacy:.75,fit:.45};
   const sceneMap=new Map();
@@ -414,7 +415,7 @@ applyLang(['ru','ky','en'].includes(localStorage.getItem('concordhouse-lang')) ?
     sceneMap.set(s,key);
   });
   function resize(){
-    dpr=Math.min(devicePixelRatio||1,1.7);W=innerWidth;H=innerHeight;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);
+    dpr=Math.min(devicePixelRatio||1,innerWidth<900?1:1.5);W=innerWidth;H=innerHeight;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);
     const seed=(n)=>{const x=Math.sin(n*999.13)*43758.5453;return x-Math.floor(x)};
     stars=Array.from({length:Math.min(135,Math.floor(W*H/10500))},(_,i)=>({x:seed(i+1)*W,y:seed(i+9)*H*.66,r:.35+seed(i+27)*1.15,p:seed(i+44)*Math.PI*2,s:.35+seed(i+61)*.8}));
     routes=[
@@ -429,6 +430,11 @@ applyLang(['ru','ky','en'].includes(localStorage.getItem('concordhouse-lang')) ?
   const bez=(a,b,c,d,u)=>{const v=1-u;return v*v*v*a+3*v*v*u*b+3*v*u*u*c+u*u*u*d};
   function point(r,u){return [bez(r.p0[0],r.p1[0],r.p2[0],r.p3[0],u)*W,bez(r.p0[1],r.p1[1],r.p2[1],r.p3[1],u)*H]}
   function draw(now){
+    requestAnimationFrame(draw);
+    if(document.hidden)return;
+    const targetFps=motion?30:6;
+    if(now-lastFrame<1000/targetFps)return;
+    lastFrame=now;
     const dt=Math.min(40,now-last);last=now;if(motion)t+=dt*.001*(sceneSpeed[scene]||.7);
     ctx.clearRect(0,0,W,H);
     // Stars: restrained, concentrated in the sky.
@@ -446,7 +452,6 @@ applyLang(['ru','ky','en'].includes(localStorage.getItem('concordhouse-lang')) ?
         glow.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=glow;ctx.beginPath();ctx.arc(p[0],p[1],16,0,Math.PI*2);ctx.fill();ctx.fillStyle=r.tone==='gold'?'rgba(255,236,194,.95)':'rgba(220,246,255,.95)';ctx.beginPath();ctx.arc(p[0],p[1],1.7,0,Math.PI*2);ctx.fill();
       }
     });
-    requestAnimationFrame(draw)
   }
   function updateScene(){
     const center=H*.52;let best=null,dist=1e9;
@@ -456,7 +461,7 @@ applyLang(['ru','ky','en'].includes(localStorage.getItem('concordhouse-lang')) ?
   }
   let mx=0,my=0,tx=0,ty=0;
   addEventListener('pointermove',e=>{if(innerWidth<900||!motion)return;tx=(e.clientX/W-.5)*24;ty=(e.clientY/H-.5)*16},{passive:true});
-  function parallax(){mx+=(tx-mx)*.045;my+=(ty-my)*.045;root.style.setProperty('--mx',mx+'px');root.style.setProperty('--my',my+'px');requestAnimationFrame(parallax)}
+  function parallax(){if(!document.hidden&&motion&&innerWidth>=900){const nx=mx+(tx-mx)*.045,ny=my+(ty-my)*.045;if(Math.abs(nx-mx)>.01||Math.abs(ny-my)>.01){mx=nx;my=ny;root.style.setProperty('--mx',mx+'px');root.style.setProperty('--my',my+'px')}}requestAnimationFrame(parallax)}
   const toggle=document.getElementById('motionToggle');
   const pref=matchMedia('(prefers-reduced-motion: reduce)'); if(pref.matches){motion=false;body.classList.add('motion-off')}
   toggle?.addEventListener('click',()=>{motion=!motion;body.classList.toggle('motion-off',!motion);toggle.textContent=motion?'◉':'○';toggle.setAttribute('aria-label',motion?'Pause background animation':'Resume background animation')});
