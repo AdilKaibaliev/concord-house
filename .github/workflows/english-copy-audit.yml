@@ -1,0 +1,14 @@
+name: English copy audit
+on:
+  push:
+    branches:
+      - preview/concord-performance-20260910
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract English copy
+        run: node .audit/extract_english.js
