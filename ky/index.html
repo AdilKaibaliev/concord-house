@@ -775,7 +775,7 @@ let initialLang='en';try{const routeLang=(location.pathname.match(/^\/(en|ru|ky)
 (()=>{
   const $=(sel,root=document)=>root.querySelector(sel);
   const $$=(sel,root=document)=>[...root.querySelectorAll(sel)];
-  const getLang=()=>document.documentElement.lang && document.documentElement.lang.toLowerCase().startsWith('ky')?'ky':'ru';
+  const getLang=()=>{const l=(document.documentElement.lang||'en').toLowerCase();return l.startsWith('ky')?'ky':l.startsWith('ru')?'ru':'en';};
 
   /* Remove explicit disclaimer/micro-copy blocks in every language. */
   const removeKeys=['calcDisclaimer','legal','conditionNotice','capitalNote','govNote','finalNotice','siteNotice','participationNotice'];
@@ -804,7 +804,7 @@ let initialLang='en';try{const routeLang=(location.pathname.match(/^\/(en|ru|ky)
       production:['Production','Verified demand can eventually justify owned or contract production in selected categories.'],
       investment:['Investment','Accumulated operating data and measurable economic results create a stronger foundation for new projects and capital.'],
       education:['Education','The system can transfer practical skills in management, purchasing, finance and entrepreneurship to the next generation.'],
-      home:['Connection to home countries','Scale and capabilities can support durable business, educational and investment links with participants' home countries.']
+      home:['Connection to home countries','Scale and capabilities can support durable business, educational and investment links with participants’ home countries.']
     }}
   };
   const stageNodes=[[],['warehouse','logistics'],['production','investment'],['education','home']];
