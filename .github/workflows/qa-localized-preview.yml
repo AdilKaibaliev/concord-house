@@ -1,0 +1,55 @@
+name: QA localized preview
+on:
+  push:
+    branches:
+      - preview/concord-performance-20260910
+    paths:
+      - .github/workflows/qa-localized-preview.yml
+permissions:
+  contents: write
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate language routes and inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, subprocess, tempfile
+          pages={'en':Path('en/index.html'),'ru':Path('ru/index.html'),'ky':Path('ky/index.html')}
+          for lang,p in pages.items():
+              s=p.read_text(encoding='utf-8')
+              assert f'<html lang="{lang}">' in s
+              assert f'https://www.concordhouse.us/{lang}/' in s
+              assert 'property="og:url"' in s
+              assert '/assets/ch-' in s
+              scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',s,re.I)
+              for i,code in enumerate(scripts):
+                  if not code.strip(): continue
+                  tf=Path(tempfile.gettempdir())/f'ch-{lang}-{i}.js'
+                  tf.write_text(code,encoding='utf-8')
+                  r=subprocess.run(['node','--check',str(tf)],capture_output=True,text=True)
+                  if r.returncode:
+                      raise RuntimeError(f'{lang} script {i} syntax error:\n{r.stderr}')
+              print(lang, 'inline scripts OK:', len(scripts))
+          en=pages['en'].read_text(encoding='utf-8')
+          assert "return l.startsWith('ky')?'ky':l.startsWith('ru')?'ru':'en'" in en
+          assert "participants’ home countries" in en
+          assert 'participants home countries' not in en
+          assert 'Перейти к содержанию' not in re.sub(r'<script[\s\S]*?</script>|<style[\s\S]*?</style>','',en,flags=re.I)
+          assert '>Связь с родиной<' not in re.sub(r'<script[\s\S]*?</script>|<style[\s\S]*?</style>','',en,flags=re.I)
+          print('English fallback localization OK')
+          print('Language-specific Open Graph routes OK')
+          PY
+      - name: Remove temporary QA workflow
+        if: success()
+        run: |
+          rm -f .github/workflows/qa-localized-preview.yml
+          git config user.name "AdilKaibaliev"
+          git config user.email "156720853+AdilKaibaliev@users.noreply.github.com"
+          git add -A
+          git commit -m "Remove temporary localization QA workflow"
+          git push
