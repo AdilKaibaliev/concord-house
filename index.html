@@ -226,7 +226,53 @@ button,a{touch-action:manipulation}
 @media(prefers-reduced-motion:reduce){.sx-shell *,.sx-order-ticket{animation:none!important;transition:none!important}}
 .investment-review{margin:24px 0 35px;padding:28px;border:1px solid #c4aa6c55;border-radius:18px;background:#142c26b8}.investment-review h3{font:1.8rem/1.25 Georgia,serif;color:#ecd4a2;margin:0 0 16px}.investment-review>p{max-width:850px;color:#c4d2c8}.investment-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:25px}.investment-grid>div{border-top:1px solid #ffffff20;padding-top:15px}.investment-grid h4{font-size:1rem;color:#e9cf99;margin:0 0 8px}.investment-grid p{font-size:.95rem;color:#b8c9be;margin:0;line-height:1.7}.source-note a{text-decoration:underline;text-underline-offset:3px}.sx-network-center small,.power-hub small{overflow-wrap:anywhere}@media(max-width:650px){.investment-grid{grid-template-columns:1fr}.investment-review{padding:22px}}
 .power-supplier strong{max-width:100%;overflow-wrap:anywhere;padding:0 4px}
-</style><link rel="canonical" href="https://concordhouse.us/"/><meta property="og:url" content="https://concordhouse.us/"/></head>
+</style><link rel="canonical" href="https://concordhouse.us/"/><meta property="og:url" content="https://concordhouse.us/"/><style id="ch-interactive-revision-css">
+/* ===== Concord House interaction revision ===== */
+.vision-map.ch-engine-map{min-height:430px!important;background:radial-gradient(circle at 50% 46%,rgba(230,180,95,.08),transparent 23%),radial-gradient(circle at 50% 52%,rgba(113,210,193,.08),transparent 42%),#091019!important;isolation:isolate}
+.ch-engine-map .engine-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:30px 30px;mask-image:radial-gradient(circle at center,#000 25%,transparent 78%);opacity:.45;pointer-events:none}
+.ch-engine-map .engine-lines{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:visible}
+.ch-engine-map .engine-link{fill:none;stroke:rgba(113,210,193,.18);stroke-width:1.25;stroke-dasharray:4 11;vector-effect:non-scaling-stroke;animation:chEngineFlow 7s linear infinite;transition:stroke .25s,stroke-width .25s,opacity .25s;opacity:.62}
+.ch-engine-map .engine-link.stage-link{stroke:rgba(230,180,95,.38);stroke-width:1.65;opacity:.9}
+.ch-engine-map .engine-link.selected-link{stroke:rgba(137,199,152,.95);stroke-width:2.5;opacity:1;filter:drop-shadow(0 0 5px rgba(113,210,193,.45));animation-duration:2.5s}
+@keyframes chEngineFlow{to{stroke-dashoffset:-90}}
+.ch-engine-map .engine-core{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);width:148px;height:148px;border-radius:50%;display:grid;place-items:center;text-align:center;padding:18px;z-index:4;border:1px solid rgba(230,180,95,.7);background:radial-gradient(circle at 38% 32%,rgba(230,180,95,.16),rgba(17,28,29,.96) 62%);box-shadow:0 0 0 1px rgba(230,180,95,.06),0 18px 44px rgba(0,0,0,.34),inset 0 0 30px rgba(230,180,95,.05)}
+.ch-engine-map .engine-core:before,.ch-engine-map .engine-core:after{content:"";position:absolute;inset:-15px;border-radius:50%;border:1px solid rgba(230,180,95,.18);animation:chCorePulse 3.3s ease-out infinite;pointer-events:none}
+.ch-engine-map .engine-core:after{inset:-29px;border-color:rgba(113,210,193,.13);animation-delay:1.15s}
+@keyframes chCorePulse{0%{transform:scale(.86);opacity:0}28%{opacity:.85}100%{transform:scale(1.17);opacity:0}}
+.ch-engine-map .engine-core strong{font-size:.95rem;line-height:1.25;color:#eef4f2;max-width:112px}.ch-engine-map .engine-core small{display:block;margin-top:7px;color:var(--gold2);font-size:.63rem;letter-spacing:.08em;text-transform:uppercase}
+.ch-engine-map .engine-stage-badge{position:absolute;left:18px;top:17px;z-index:5;display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid rgba(230,180,95,.18);border-radius:999px;background:rgba(8,14,20,.66);backdrop-filter:blur(8px);font-size:.68rem;color:#aebdc0;letter-spacing:.04em}
+.ch-engine-map .engine-stage-badge i{width:7px;height:7px;border-radius:50%;background:var(--gold2);box-shadow:0 0 12px rgba(230,180,95,.65);animation:chDotPulse 2s ease-in-out infinite}
+@keyframes chDotPulse{50%{transform:scale(1.5);opacity:.58}}
+.ch-engine-map .engine-node{position:absolute;z-index:5;appearance:none;border:1px solid rgba(113,210,193,.18);background:rgba(11,18,26,.76);color:#7f9296;border-radius:999px;padding:9px 13px;font:inherit;font-size:.72rem;cursor:pointer;transition:transform .22s,border-color .22s,background .22s,color .22s,box-shadow .22s,opacity .22s;backdrop-filter:blur(8px);white-space:nowrap}
+.ch-engine-map .engine-node:hover,.ch-engine-map .engine-node:focus-visible,.ch-engine-map .engine-node.is-selected{color:#e8f3ef;border-color:rgba(137,199,152,.72);background:rgba(24,51,48,.82);box-shadow:0 0 0 1px rgba(137,199,152,.08),0 8px 30px rgba(0,0,0,.28),0 0 24px rgba(113,210,193,.08);transform:translateY(-2px)}
+.ch-engine-map .engine-node.is-stage{color:#e9d7aa;border-color:rgba(230,180,95,.44);background:rgba(44,35,22,.48)}
+.ch-engine-map .en-warehouse{left:8%;top:17%}.ch-engine-map .en-investment{left:50%;top:9%;transform:translateX(-50%)}.ch-engine-map .en-investment:hover,.ch-engine-map .en-investment:focus-visible,.ch-engine-map .en-investment.is-selected{transform:translateX(-50%) translateY(-2px)}.ch-engine-map .en-logistics{right:7%;top:19%}.ch-engine-map .en-production{left:6%;bottom:15%}.ch-engine-map .en-education{right:5%;bottom:13%}.ch-engine-map .en-home{left:50%;bottom:7%;transform:translateX(-50%)}.ch-engine-map .en-home:hover,.ch-engine-map .en-home:focus-visible,.ch-engine-map .en-home.is-selected{transform:translateX(-50%) translateY(-2px)}
+.ch-engine-map .engine-readout{position:absolute;left:50%;top:68%;transform:translateX(-50%);z-index:4;width:min(70%,360px);text-align:center;pointer-events:none;transition:opacity .2s,transform .2s}
+.ch-engine-map .engine-readout b{display:block;color:#e8eee9;font-size:.77rem;margin-bottom:4px}.ch-engine-map .engine-readout span{display:block;color:#8da0a4;font-size:.66rem;line-height:1.45}
+.ch-engine-map .engine-readout.is-empty{opacity:.72}.ch-engine-map .engine-readout:not(.is-empty){transform:translateX(-50%) translateY(-2px)}
+
+/* Interactive decision test */
+#fit .section-head{margin-bottom:24px}.fit-quiz{border:1px solid var(--line);border-radius:30px;background:linear-gradient(145deg,rgba(19,35,37,.95),rgba(8,16,22,.96));overflow:hidden;box-shadow:0 22px 60px rgba(0,0,0,.18)}
+.quiz-topline{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 22px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.018)}
+.quiz-progress-copy{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#a9b8b7}.quiz-progress-copy b{color:var(--gold2)}
+.quiz-track{height:4px;flex:1;max-width:360px;background:rgba(255,255,255,.07);border-radius:999px;overflow:hidden}.quiz-track span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:inherit;transition:width .35s ease}
+.quiz-layout{display:grid;grid-template-columns:1.15fr .85fr;min-height:430px}.quiz-main{padding:34px 36px 30px;border-right:1px solid rgba(255,255,255,.07);position:relative}.quiz-side{padding:30px;background:radial-gradient(circle at 70% 10%,rgba(230,180,95,.08),transparent 32%),rgba(5,12,17,.25)}
+.quiz-kicker{font-size:.68rem;text-transform:uppercase;letter-spacing:.13em;color:var(--gold2);font-weight:800}.quiz-main h3{font-size:clamp(1.55rem,2.35vw,2.25rem);line-height:1.14;margin:12px 0 12px;max-width:760px}.quiz-hint{color:var(--muted);max-width:700px;line-height:1.65;margin:0 0 25px;font-size:.93rem}
+.quiz-options{display:grid;gap:10px;max-width:690px}.quiz-option{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:12px;width:100%;border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(255,255,255,.025);padding:14px 15px;color:#e8efeb;text-align:left;cursor:pointer;transition:.2s;font:inherit}.quiz-option:hover,.quiz-option:focus-visible{border-color:rgba(230,180,95,.48);background:rgba(230,180,95,.06);transform:translateX(3px)}.quiz-option.is-chosen{border-color:rgba(137,199,152,.66);background:rgba(137,199,152,.08)}
+.quiz-option .choice-mark{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.14);color:#9cadad;font-size:.76rem}.quiz-option.is-chosen .choice-mark{border-color:rgba(137,199,152,.6);color:#c8efd2}.quiz-option small{color:#728487;font-size:.69rem}.quiz-nav{display:flex;justify-content:space-between;gap:12px;margin-top:25px}.quiz-nav button{border:0;background:none;color:#90a0a0;font:inherit;font-size:.78rem;cursor:pointer;padding:7px 0}.quiz-nav button:hover{color:#e8d7ab}.quiz-nav button:disabled{opacity:.25;cursor:default}
+.quiz-side-title{font-size:.72rem;color:#849699;text-transform:uppercase;letter-spacing:.1em;margin-bottom:15px}.quiz-checks{display:grid;gap:9px}.quiz-check{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:12px;border:1px solid rgba(255,255,255,.07);border-radius:14px;background:rgba(255,255,255,.018)}.quiz-check .qc-num{width:29px;height:29px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.1);font-size:.68rem;color:#78898b}.quiz-check b{font-size:.8rem}.quiz-check span:last-child{font-size:.68rem;color:#718184}.quiz-check.done{border-color:rgba(137,199,152,.26)}.quiz-check.done .qc-num{border-color:rgba(137,199,152,.45);color:#c9efd3}.quiz-check.warn{border-color:rgba(230,180,95,.28)}.quiz-check.warn .qc-num{border-color:rgba(230,180,95,.45);color:#ecd194}
+.quiz-result-mini{margin-top:18px;padding:17px;border:1px solid rgba(230,180,95,.15);border-radius:17px;background:linear-gradient(135deg,rgba(230,180,95,.055),rgba(113,210,193,.035))}.quiz-result-mini small{display:block;color:#879799;margin-bottom:6px}.quiz-result-mini b{display:block;font-size:1.03rem;color:#edf3f0;line-height:1.35}.quiz-result-mini p{margin:8px 0 0;color:#8fa0a2;font-size:.78rem;line-height:1.5}
+.quiz-final{animation:quizIn .35s ease}.quiz-final .quiz-score{display:inline-flex;align-items:center;gap:9px;padding:7px 10px;border:1px solid rgba(137,199,152,.3);border-radius:999px;color:#b9dfc4;background:rgba(137,199,152,.06);font-size:.72rem}.quiz-final h3{max-width:680px}.quiz-final .result-action{margin-top:23px;display:flex;gap:10px;flex-wrap:wrap}.quiz-final .result-action a{min-height:44px;padding:11px 17px;border-radius:999px;text-decoration:none;border:1px solid rgba(230,180,95,.48);background:rgba(230,180,95,.10);color:#f1dfb8;font-weight:800;font-size:.82rem}.quiz-final .result-action button{min-height:44px;padding:11px 17px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.02);color:#b3c0bd;cursor:pointer}.quiz-final ul{margin:18px 0 0;padding-left:19px;color:#acbab8}.quiz-final li{margin:7px 0;line-height:1.45}.quiz-final li::marker{color:var(--gold2)}
+@keyframes quizIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+
+/* Remove defensive micro-copy requested by owner */
+[data-i18n="calcDisclaimer"],[data-i18n="legal"],[data-i18n="conditionNotice"],[data-i18n="capitalNote"],[data-i18n="govNote"],[data-i18n="finalNotice"],[data-i18n="siteNotice"],[data-i18n="participationNotice"]{display:none!important}
+
+@media(max-width:980px){.quiz-layout{grid-template-columns:1fr}.quiz-main{border-right:0;border-bottom:1px solid rgba(255,255,255,.07)}.ch-engine-map .engine-readout{width:64%}}
+@media(max-width:620px){.vision-map.ch-engine-map{min-height:390px!important}.ch-engine-map .engine-core{width:126px;height:126px}.ch-engine-map .engine-node{font-size:.64rem;padding:8px 9px}.ch-engine-map .en-warehouse{left:4%;top:17%}.ch-engine-map .en-logistics{right:3%;top:19%}.ch-engine-map .en-production{left:3%;bottom:16%}.ch-engine-map .en-education{right:2%;bottom:15%}.ch-engine-map .engine-readout{top:66%;width:62%}.quiz-main,.quiz-side{padding:24px 20px}.quiz-topline{padding:14px 17px}.quiz-track{max-width:170px}.quiz-option{grid-template-columns:30px 1fr}.quiz-option small{display:none}}
+@media(prefers-reduced-motion:reduce){.ch-engine-map .engine-link,.ch-engine-map .engine-core:before,.ch-engine-map .engine-core:after,.ch-engine-map .engine-stage-badge i{animation:none!important}}
+</style>
+</head>
 <body data-scene="hero"><a class="skip-link" href="#top">Перейти к содержанию</a><noscript><div class="noscript-note">Для интерактивных схем и калькулятора требуется JavaScript. Основное содержание страницы остаётся доступным.</div></noscript>
 <div aria-hidden="true" class="cinematic-bg"><div class="mountain-layer"></div><div class="mountain-depth"></div><div class="aurora"></div><div class="horizon-glow"></div><canvas class="bg-canvas" id="cinematicCanvas"></canvas><div class="veil"></div><div class="grain"></div></div>
 <div class="noise"></div><div class="scroll-progress" id="progress"></div>
@@ -702,4 +748,181 @@ applyLang(['ru','ky','en'].includes(localStorage.getItem('concordhouse-lang')) ?
  new MutationObserver(()=>setTimeout(update,0)).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
  update();
 })();
-</script></body></html>
+</script><script id="ch-interactive-revision-js">
+(()=>{
+  const $=(sel,root=document)=>root.querySelector(sel);
+  const $$=(sel,root=document)=>[...root.querySelectorAll(sel)];
+  const getLang=()=>document.documentElement.lang && document.documentElement.lang.toLowerCase().startsWith('ky')?'ky':'ru';
+
+  /* Remove explicit disclaimer/micro-copy blocks in every language. */
+  const removeKeys=['calcDisclaimer','legal','conditionNotice','capitalNote','govNote','finalNotice','siteNotice','participationNotice'];
+  removeKeys.forEach(k=>$$(`[data-i18n="${k}"]`).forEach(el=>el.remove()));
+
+  const engineCopy={
+    ru:{core:'Экономический двигатель системы',stage:['Доказать экономику','Рабочая инфраструктура','Расширение направлений','Институт следующего поколения'],idle:'Выберите направление, чтобы увидеть его роль в системе.',nodes:{
+      warehouse:['Склад','Общий запас по доказанным категориям снижает дефицит и делает закупки предсказуемее.'],
+      logistics:['Логистика','Консолидация поставок и объёма создаёт основание для более эффективной доставки и прямого импорта.'],
+      production:['Производство','Подтверждённый спрос может со временем оправдать собственное или контрактное производство по отдельным категориям.'],
+      investment:['Инвестиции','Накопленная операционная статистика и денежный эффект создают более сильную основу для новых проектов и капитала.'],
+      education:['Образование','Система передаёт следующему поколению практические навыки управления, закупок, финансов и предпринимательства.'],
+      home:['Связь с родиной','Масштаб и компетенции могут создавать устойчивые деловые, образовательные и инвестиционные связи со странами происхождения участников.']
+    }},
+    ky:{core:'Системанын экономикалык кыймылдаткычы',stage:['Экономиканы далилдөө','Иштеген инфраструктура','Багыттарды кеңейтүү','Кийинки муундун институту'],idle:'Багытты тандаңыз — анын системадагы ролу көрсөтүлөт.',nodes:{
+      warehouse:['Кампа','Далилденген категориялар боюнча жалпы запас тартыштыкты азайтып, сатып алууну туруктуураак кылат.'],
+      logistics:['Логистика','Жеткирүүлөрдү жана көлөмдү бириктирүү натыйжалуураак ташууга жана түз импортко негиз түзөт.'],
+      production:['Өндүрүш','Ырасталган суроо-талап убакыт өтүшү менен айрым категорияларда өз же контракттык өндүрүштү негиздей алат.'],
+      investment:['Инвестициялар','Топтолгон операциялык маалымат жана экономикалык натыйжа жаңы долбоорлор менен капитал үчүн күчтүүрөөк негиз түзөт.'],
+      education:['Билим берүү','Система кийинки муунга башкаруу, сатып алуу, финансы жана ишкердик боюнча практикалык компетенцияларды өткөрөт.'],
+      home:['Мекен менен байланыш','Масштаб жана компетенциялар катышуучулардын келип чыккан өлкөлөрү менен туруктуу ишкердик, билим берүү жана инвестициялык байланыштарды түзө алат.']
+    }}
+  };
+  const stageNodes=[[],['warehouse','logistics'],['production','investment'],['education','home']];
+  let engineStage=0, engineSelected=null;
+  const map=$('.vision-map');
+  if(map){
+    map.classList.add('ch-engine-map');
+    map.setAttribute('aria-label','Interactive economic engine');
+    map.innerHTML=`
+      <div class="engine-grid"></div>
+      <div class="engine-stage-badge"><i></i><span id="engineStageLabel"></span></div>
+      <svg class="engine-lines" viewBox="0 0 620 440" preserveAspectRatio="none" aria-hidden="true">
+        <path class="engine-link" data-link="warehouse" d="M110 88 C190 120 224 154 310 207"/>
+        <path class="engine-link" data-link="investment" d="M310 65 C310 108 310 145 310 207"/>
+        <path class="engine-link" data-link="logistics" d="M515 95 C440 124 397 159 310 207"/>
+        <path class="engine-link" data-link="production" d="M105 352 C191 316 231 279 310 207"/>
+        <path class="engine-link" data-link="home" d="M310 385 C310 332 310 277 310 207"/>
+        <path class="engine-link" data-link="education" d="M520 350 C444 316 394 271 310 207"/>
+      </svg>
+      <button class="engine-node en-warehouse" data-engine="warehouse" type="button"><span data-i18n="vm1">Склад</span></button>
+      <button class="engine-node en-logistics" data-engine="logistics" type="button"><span data-i18n="vm2">Логистика</span></button>
+      <button class="engine-node en-production" data-engine="production" type="button"><span data-i18n="vm3">Производство</span></button>
+      <button class="engine-node en-investment" data-engine="investment" type="button"><span data-i18n="vm5">Инвестиции</span></button>
+      <button class="engine-node en-education" data-engine="education" type="button"><span data-i18n="vm4">Образование</span></button>
+      <button class="engine-node en-home" data-engine="home" type="button"><span id="homelandDot">Связь с родиной</span></button>
+      <div class="engine-core"><div><strong id="engineCoreText"></strong><small id="engineCoreStage"></small></div></div>
+      <div class="engine-readout is-empty" id="engineReadout"><b></b><span></span></div>`;
+
+    const paintEngine=(selected=engineSelected)=>{
+      const l=getLang(),C=engineCopy[l];
+      $('#engineCoreText').textContent=C.core;
+      $('#engineCoreStage').textContent=C.stage[engineStage];
+      $('#engineStageLabel').textContent=C.stage[engineStage];
+      const stageSet=new Set(stageNodes[engineStage]);
+      $$('.engine-node',map).forEach(n=>{n.classList.toggle('is-stage',stageSet.has(n.dataset.engine));n.classList.toggle('is-selected',n.dataset.engine===selected)});
+      $$('.engine-link',map).forEach(p=>{p.classList.toggle('stage-link',stageSet.has(p.dataset.link));p.classList.toggle('selected-link',p.dataset.link===selected)});
+      const ro=$('#engineReadout');
+      if(selected && C.nodes[selected]){ro.classList.remove('is-empty');$('b',ro).textContent=C.nodes[selected][0];$('span',ro).textContent=C.nodes[selected][1]}
+      else{ro.classList.add('is-empty');$('b',ro).textContent=C.stage[engineStage];$('span',ro).textContent=C.idle}
+      const home=$('#homelandDot');if(home)home.textContent=C.nodes.home[0];
+    };
+    const selectEngine=(key)=>{engineSelected=key;paintEngine(key)};
+    $$('.engine-node',map).forEach(n=>{
+      n.addEventListener('click',()=>selectEngine(n.dataset.engine));
+      n.addEventListener('pointerenter',()=>selectEngine(n.dataset.engine));
+    });
+    $$('.horizon button').forEach((b,i)=>b.addEventListener('click',()=>{engineStage=i;engineSelected=null;paintEngine()}));
+    paintEngine();
+    window.__paintConcordEngine=paintEngine;
+  }
+
+  const quizCopy={
+    ru:{
+      eyebrow:'Три вопроса перед решением',title:'Проверьте готовность проекта — и поймите, что делать дальше.',lead:'Три коротких ответа превращают раздел в практический фильтр для участника, партнёра или инвестора.',progress:'Вопрос',of:'из',side:'Карта решения',waiting:'Ответьте на три вопроса — здесь появится ваш следующий шаг.',back:'← Назад',restart:'Начать заново',labels:['Механизм','Доказательства','Правила'],states:['не отвечено','подтверждено','нужно уточнить','не подтверждено'],
+      questions:[
+        {q:'Понимаете ли вы, как объединённый спрос превращается в экономическую силу?',hint:'Смысл должен быть понятен без презентационной риторики: повторяющийся спрос → общая закупочная позиция → измеримый эффект → инфраструктура.',opts:[['Да, механизм понятен',2,'Могу объяснить своими словами'],['Понимаю частично',1,'Нужно разобрать отдельные звенья'],['Нет, пока не понимаю',0,'Сначала нужна модель']]},
+        {q:'Достаточно ли для вас доказательств, чтобы двигаться дальше?',hint:'Речь о подтверждённом объёме, реальных SKU, предложениях поставщиков, пилотных закупках и измеренном экономическом эффекте.',opts:[['Да, доказательств достаточно',2,'Готов оценивать следующий этап'],['Нужны дополнительные данные',1,'Хочу увидеть подтверждения'],['Нет, пока недостаточно',0,'Решение принимать рано']]},
+        {q:'Понятны и приемлемы ли для вас правила участия и управления?',hint:'Роли, полномочия оператора, контроль, порядок принятия решений, распределение результата и механизм выхода должны быть понятны до масштабирования.',opts:[['Да, правила понятны',2,'Можно обсуждать участие'],['Есть вопросы к условиям',1,'Нужно согласовать детали'],['Нет, правила не подходят',0,'Сначала изменить или отклонить условия']]}
+      ],
+      results:{
+        model:{tag:'Сначала разобраться в модели',title:'Пока не переходите к инвестиционному решению.',text:'Главный пробел — сам экономический механизм. Сначала разберите, как формируется объединённый спрос и откуда появляется измеримый эффект.',bullets:['Пройти раздел «Модель»','Сформулировать механизм своими словами','Вернуться к тесту после понимания причинно-следственной цепочки'],cta:'Разобрать модель',href:'#model'},
+        evidence:{tag:'Нужны доказательства',title:'Следующий шаг — запросить и проверить факты.',text:'Механизм понятен, но доказательная база ещё не даёт вам достаточной уверенности. Не спорьте с идеей — проверьте цифры и пилот.',bullets:['Проверить повторяющийся объём и ключевые SKU','Сопоставить supplier quotes и фактические закупки','Посмотреть измеренный эффект пилота'],cta:'Проверить экономику',href:'#economics'},
+        governance:{tag:'Нужно согласовать правила',title:'Экономика может работать, но решение упирается в управление.',text:'До участия стоит закрыть вопросы полномочий, контроля, распределения результата и выхода.',bullets:['Разобрать роли Board и Executive Management','Уточнить контроль и отчётность','Согласовать ключевые правила участия'],cta:'Перейти к управлению',href:'#governance'},
+        conditional:{tag:'Условная готовность',title:'Проект можно изучать дальше, но один из элементов ещё требует подтверждения.',text:'Вы понимаете основу, однако перед предметным решением стоит закрыть отмеченные вопросы.',bullets:['Зафиксировать оставшиеся вопросы','Получить недостающие подтверждения','Повторить оценку после уточнений'],cta:'Вернуться к экономике',href:'#economics'},
+        ready:{tag:'Готовность к предметному этапу',title:'Можно переходить от изучения концепции к предметному разговору.',text:'По вашим ответам механизм понятен, доказательств достаточно, а правила не вызывают принципиальных возражений.',bullets:['Определить предполагаемую роль','Обсудить формат участия и следующий рабочий шаг','Перейти к конкретным данным и параметрам проекта'],cta:'Обсудить проект',href:'mailto:lfc@legacyfidelity.com?subject=Concord%20House%20Project'}
+      },score:'подтверждено',answerStatus:['не отвечено','подтверждено','уточнить','не подтверждено']
+    },
+    ky:{
+      eyebrow:'Чечимдин алдындагы үч суроо',title:'Долбоордун даярдыгын текшериңиз — андан ары эмне кылуу керектигин аныктаңыз.',lead:'Үч кыска жооп катышуучу, өнөктөш же инвестор үчүн практикалык чечим чыпкасын түзөт.',progress:'Суроо',of:'ичинен',side:'Чечим картасы',waiting:'Үч суроого жооп бериңиз — бул жерде кийинки кадамыңыз чыгат.',back:'← Артка',restart:'Кайра баштоо',labels:['Механизм','Далилдер','Эрежелер'],states:['жооп жок','ырасталды','тактоо керек','ырасталган жок'],
+      questions:[
+        {q:'Бириктирилген суроо-талап кантип экономикалык күчкө айланарын түшүнөсүзбү?',hint:'Логика презентациясыз да түшүнүктүү болушу керек: кайталанма суроо-талап → жалпы сатып алуу позициясы → өлчөнгөн натыйжа → инфраструктура.',opts:[['Ооба, механизм түшүнүктүү',2,'Өз сөзүм менен түшүндүрө алам'],['Жарым-жартылай түшүнөм',1,'Айрым звенолорду тактоо керек'],['Жок, азырынча түшүнүксүз',0,'Адегенде моделди түшүнүү керек']]},
+        {q:'Андан ары өтүү үчүн далилдер сизге жетиштүүбү?',hint:'Ырасталган көлөм, реалдуу SKU, жеткирүүчүлөрдүн сунуштары, пилоттук сатып алуулар жана өлчөнгөн экономикалык натыйжа жөнүндө сөз болуп жатат.',opts:[['Ооба, далил жетиштүү',2,'Кийинки этапты баалоого даярмын'],['Кошумча маалымат керек',1,'Ырастоолорду көргүм келет'],['Жок, азырынча жетишсиз',0,'Чечим кабыл алууга эрте']]},
+        {q:'Катышуу жана башкаруу эрежелери сизге түшүнүктүү жана ылайыктуубу?',hint:'Ролдор, оператордун ыйгарым укуктары, көзөмөл, чечим кабыл алуу, натыйжаны бөлүштүрүү жана чыгуу механизми масштабдоодон мурун түшүнүктүү болушу керек.',opts:[['Ооба, эрежелер түшүнүктүү',2,'Катышууну талкуулоого болот'],['Шарттар боюнча суроолор бар',1,'Айрым деталдарды макулдашуу керек'],['Жок, эрежелер туура келбейт',0,'Адегенде шарттарды өзгөртүү же четке кагуу керек']]}
+      ],
+      results:{
+        model:{tag:'Адегенде моделди түшүнүү',title:'Азырынча инвестициялык чечимге өтпөңүз.',text:'Негизги боштук — экономикалык механизмдин өзү. Бириктирилген суроо-талап кантип түзүлөрүн жана өлчөнгөн натыйжа кайдан чыгарын адегенде түшүнүңүз.',bullets:['«Модель» бөлүмүн карап чыгуу','Механизмди өз сөзүңүз менен түшүндүрүп көрүү','Себеп-натыйжа логикасы түшүнүктүү болгондо тестке кайтуу'],cta:'Моделди карап чыгуу',href:'#model'},
+        evidence:{tag:'Далилдер керек',title:'Кийинки кадам — фактыларды сурап, текшерүү.',text:'Механизм түшүнүктүү, бирок далилдер азырынча жетиштүү ишеним бербейт. Идеяны эмес, сандарды жана пилотту текшериңиз.',bullets:['Кайталанма көлөмдү жана негизги SKUларды текшерүү','Supplier quotes менен реалдуу сатып алууларды салыштыруу','Пилоттун өлчөнгөн натыйжасын көрүү'],cta:'Экономиканы текшерүү',href:'#economics'},
+        governance:{tag:'Эрежелерди тактоо керек',title:'Экономика иштеши мүмкүн, бирок чечим башкарууга келип такалат.',text:'Катышуудан мурун ыйгарым укуктар, көзөмөл, натыйжаны бөлүштүрүү жана чыгуу боюнча суроолорду жабыңыз.',bullets:['Board жана Executive Management ролдорун кароо','Көзөмөл жана отчеттуулукту тактоо','Катышуунун негизги эрежелерин макулдашуу'],cta:'Башкарууга өтүү',href:'#governance'},
+        conditional:{tag:'Шарттуу даярдык',title:'Долбоорду андан ары изилдөөгө болот, бирок бир элемент тактоону талап кылат.',text:'Негизги логика түшүнүктүү, бирок предметтик чечимдин алдында белгиленген суроолорду жабуу керек.',bullets:['Калган суроолорду белгилөө','Жетишпеген ырастоолорду алуу','Тактоодон кийин баалоону кайталоо'],cta:'Экономикага кайтуу',href:'#economics'},
+        ready:{tag:'Предметтик этапка даяр',title:'Концепцияны изилдөөдөн предметтик сүйлөшүүгө өтсө болот.',text:'Жоопторуңуз боюнча механизм түшүнүктүү, далилдер жетиштүү жана эрежелер боюнча принципиалдуу тоскоолдук жок.',bullets:['Болжолдуу ролду аныктоо','Катышуу форматын жана кийинки иш кадамын талкуулоо','Долбоордун конкреттүү маалыматтарына жана параметрлерине өтүү'],cta:'Долбоорду талкуулоо',href:'mailto:lfc@legacyfidelity.com?subject=Concord%20House%20Project'}
+      },score:'ырасталды',answerStatus:['жооп жок','ырасталды','тактоо','ырасталган жок']
+    }
+  };
+
+  const fit=$('#fit');
+  let answers=[null,null,null],step=0;
+  const resultKey=()=>{
+    if(answers[0]===0)return'model';
+    if(answers[1]===0)return'evidence';
+    if(answers[2]===0)return'governance';
+    if(answers.every(v=>v===2))return'ready';
+    if(answers[1]===1)return'evidence';
+    if(answers[2]===1)return'governance';
+    return'conditional';
+  };
+  if(fit){
+    const head=$('.section-head',fit);
+    if(head){head.innerHTML=`<div><div class="eyebrow" id="quizEyebrow"></div><h2 id="quizTitle"></h2></div><p id="quizLead"></p>`}
+    $$('.decision-three,.decision-note',fit).forEach(el=>el.remove());
+    const wrap=$('.wrap',fit);
+    wrap.insertAdjacentHTML('beforeend',`<div class="fit-quiz reveal show" id="fitQuiz">
+      <div class="quiz-topline"><div class="quiz-progress-copy"><span id="quizProgressText"></span></div><div class="quiz-track"><span id="quizTrackFill"></span></div></div>
+      <div class="quiz-layout"><div class="quiz-main" id="quizMain"></div><aside class="quiz-side"><div class="quiz-side-title" id="quizSideTitle"></div><div class="quiz-checks" id="quizChecks"></div><div class="quiz-result-mini" id="quizMini"></div></aside></div>
+    </div>`);
+
+    const statusClass=v=>v==null?'':v===2?'done':v===1?'warn':'warn';
+    const statusText=(C,v)=>v==null?C.states[0]:v===2?C.states[1]:v===1?C.states[2]:C.states[3];
+    const paintSide=()=>{
+      const C=quizCopy[getLang()];
+      $('#quizSideTitle').textContent=C.side;
+      $('#quizChecks').innerHTML=C.labels.map((x,i)=>`<div class="quiz-check ${statusClass(answers[i])}"><span class="qc-num">0${i+1}</span><b>${x}</b><span>${statusText(C,answers[i])}</span></div>`).join('');
+      const mini=$('#quizMini');
+      const done=answers.filter(v=>v!=null).length;
+      if(done<3){mini.innerHTML=`<small>${done}/3</small><b>${C.waiting}</b>`}
+      else{const R=C.results[resultKey()];mini.innerHTML=`<small>${R.tag}</small><b>${R.title}</b><p>${R.text}</p>`}
+    };
+    const paintQuestion=()=>{
+      const C=quizCopy[getLang()],Q=C.questions[step];
+      $('#quizProgressText').innerHTML=`${C.progress} <b>${step+1}</b> ${C.of} 3`;
+      $('#quizTrackFill').style.width=`${(answers.filter(v=>v!=null).length/3)*100}%`;
+      $('#quizMain').innerHTML=`<div class="quiz-kicker">${C.labels[step]}</div><h3>${Q.q}</h3><p class="quiz-hint">${Q.hint}</p><div class="quiz-options">${Q.opts.map((o,i)=>`<button class="quiz-option ${answers[step]===o[1]?'is-chosen':''}" data-score="${o[1]}" type="button"><span class="choice-mark">${String.fromCharCode(65+i)}</span><span>${o[0]}</span><small>${o[2]}</small></button>`).join('')}</div><div class="quiz-nav"><button id="quizBack" ${step===0?'disabled':''} type="button">${C.back}</button><button id="quizRestart" type="button">${C.restart}</button></div>`;
+      $$('.quiz-option',$('#quizMain')).forEach(btn=>btn.addEventListener('click',()=>{
+        answers[step]=+btn.dataset.score;
+        $$('.quiz-option',$('#quizMain')).forEach(x=>x.classList.toggle('is-chosen',x===btn));
+        paintSide();$('#quizTrackFill').style.width=`${(answers.filter(v=>v!=null).length/3)*100}%`;
+        setTimeout(()=>{if(step<2){step++;paintQuestion();paintSide()}else paintResult()},180);
+      }));
+      $('#quizBack').addEventListener('click',()=>{if(step>0){step--;paintQuestion();paintSide()}});
+      $('#quizRestart').addEventListener('click',resetQuiz);
+      paintSide();
+    };
+    const paintResult=()=>{
+      const C=quizCopy[getLang()],R=C.results[resultKey()],confirmed=answers.filter(v=>v===2).length;
+      $('#quizProgressText').innerHTML=`<b>${confirmed}/3</b> ${C.score}`;$('#quizTrackFill').style.width='100%';
+      $('#quizMain').innerHTML=`<div class="quiz-final"><span class="quiz-score">${R.tag}</span><h3>${R.title}</h3><p class="quiz-hint">${R.text}</p><ul>${R.bullets.map(x=>`<li>${x}</li>`).join('')}</ul><div class="result-action"><a href="${R.href}">${R.cta} →</a><button id="quizRestart" type="button">${C.restart}</button></div></div>`;
+      $('#quizRestart').addEventListener('click',resetQuiz);paintSide();
+    };
+    function resetQuiz(){answers=[null,null,null];step=0;paintQuestion();paintSide()}
+    const paintQuizLang=()=>{
+      const C=quizCopy[getLang()];$('#quizEyebrow').textContent=C.eyebrow;$('#quizTitle').textContent=C.title;$('#quizLead').textContent=C.lead;
+      if(answers.every(v=>v!=null))paintResult();else paintQuestion();
+    };
+    paintQuizLang();window.__paintConcordQuiz=paintQuizLang;
+  }
+
+  $$('.lang button').forEach(b=>b.addEventListener('click',()=>setTimeout(()=>{
+    if(window.__paintConcordEngine)window.__paintConcordEngine();
+    if(window.__paintConcordQuiz)window.__paintConcordQuiz();
+  },0)));
+})();
+</script>
+</body></html>
