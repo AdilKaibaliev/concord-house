@@ -1,0 +1,65 @@
+name: Concord performance preview
+
+on:
+  push:
+    branches:
+      - "preview/concord-performance-20260910"
+    paths:
+      - ".perf/run-performance-preview"
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out performance branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Record baseline
+        run: |
+          echo "Baseline index bytes: $(wc -c < index.html)"
+          echo "Baseline files:"
+          find . -maxdepth 2 -type f -not -path './.git/*' -printf '%p %s bytes\n' | sort
+
+      - name: Build optimized preview
+        run: python .perf/optimize_site.py
+
+      - name: Validate output
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          r=json.loads(Path('performance-report.json').read_text())
+          assert r['optimized_html_bytes'] < r['original_html_bytes'] * 0.5, r
+          assert r['unique_webp_assets'] <= r['base64_webp_occurrences']
+          assert Path('assets').exists()
+          s=Path('index.html').read_bytes()
+          assert b'ch-interactive-revision-js' in s
+          assert b'ch-performance-optimization-js' in s
+          print('HTML reduction:', round((1-r['optimized_html_bytes']/r['original_html_bytes'])*100,1), '%')
+          print('Output assets:', list(Path('assets').glob('*.webp')))
+          PY
+
+      - name: Upload review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: concord-house-performance-preview
+          path: |
+            index.html
+            assets/
+            performance-report.json
+          if-no-files-found: error
+
+      - name: Commit clean preview result
+        run: |
+          git config user.name "Concord House Performance Bot"
+          git config user.email "actions@users.noreply.github.com"
+          rm -rf .perf
+          rm -f .github/workflows/concord-performance-preview.yml
+          git add -A
+          git commit -m "Optimize Concord House delivery without redesign"
+          git push origin HEAD:"preview/concord-performance-20260910"
