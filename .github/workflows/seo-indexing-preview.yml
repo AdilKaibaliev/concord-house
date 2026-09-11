@@ -1,0 +1,154 @@
+name: SEO indexing preview
+on:
+  push:
+    branches:
+      - preview/concord-seo-indexing-20260910
+    paths:
+      - .github/workflows/seo-indexing-preview.yml
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Add technical SEO package
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json, re, xml.etree.ElementTree as ET
+
+          domain='https://www.concordhouse.us'
+          langs={
+            'en': {
+              'file':'en/index.html','url':f'{domain}/en','html_lang':'en','locale':'en_US',
+              'title':'Concord House | Shared Purchasing Power',
+              'description':'Concord House combines recurring business purchasing demand to build purchasing power, shared infrastructure and long-term institutional value.'
+            },
+            'ru': {
+              'file':'ru/index.html','url':f'{domain}/ru','html_lang':'ru','locale':'ru_RU',
+              'title':'Concord House | Объединённая закупочная сила',
+              'description':'Concord House / Ынтымак Ордосу объединяет регулярный спрос компаний, чтобы создавать закупочную силу, общую инфраструктуру и долгосрочный капитал.'
+            },
+            'ky': {
+              'file':'ky/index.html','url':f'{domain}/ky','html_lang':'ky','locale':'ky_KG',
+              'title':'Concord House | Бириктирилген сатып алуу күчү',
+              'description':'Concord House / Ынтымак Ордосу компаниялардын туруктуу сатып алуу муктаждыктарын бириктирип, жалпы сатып алуу күчүн, инфраструктураны жана узак мөөнөттүү капиталды түзүүгө шарт түзөт.'
+            }
+          }
+
+          def seo_block(lang, canonical):
+              d=langs[lang]
+              alts=''.join([
+                f'<link rel="alternate" hreflang="en" href="{domain}/en"/>',
+                f'<link rel="alternate" hreflang="ru" href="{domain}/ru"/>',
+                f'<link rel="alternate" hreflang="ky" href="{domain}/ky"/>',
+                f'<link rel="alternate" hreflang="x-default" href="{domain}/en"/>'
+              ])
+              schema={
+                '@context':'https://schema.org',
+                '@type':'WebSite',
+                '@id':canonical+'#website',
+                'url':canonical,
+                'name':'Concord House',
+                'alternateName':'Ынтымак Ордосу',
+                'inLanguage':d['html_lang'],
+                'description':d['description']
+              }
+              return ('<!-- ch-seo-indexing:start -->'
+                      f'<link rel="canonical" href="{canonical}"/>'
+                      +alts+
+                      f'<meta property="og:url" content="{canonical}"/>'
+                      f'<script type="application/ld+json" id="ch-website-schema">{json.dumps(schema,ensure_ascii=False,separators=(",",":"))}</script>'
+                      '<!-- ch-seo-indexing:end -->')
+
+          def clean_existing(s):
+              s=re.sub(r'<!-- ch-seo-indexing:start -->.*?<!-- ch-seo-indexing:end -->','',s,flags=re.S)
+              s=re.sub(r'<link\s+[^>]*rel=["\']canonical["\'][^>]*>','',s,flags=re.I)
+              s=re.sub(r'<link\s+[^>]*rel=["\']alternate["\'][^>]*hreflang=["\'][^"\']+["\'][^>]*>','',s,flags=re.I)
+              s=re.sub(r'<meta\s+[^>]*property=["\']og:url["\'][^>]*>','',s,flags=re.I)
+              s=re.sub(r'<script\s+[^>]*id=["\']ch-website-schema["\'][^>]*>.*?</script>','',s,flags=re.I|re.S)
+              return s
+
+          # Root is an English fallback in the repository, while Vercel redirects / to /en.
+          pages=[('index.html','en',f'{domain}/en')]+[(d['file'],lang,d['url']) for lang,d in langs.items()]
+          for fp,lang,canonical in pages:
+              p=Path(fp); s=p.read_text(encoding='utf-8')
+              s=clean_existing(s)
+              # Normalize page language and title/description for static crawlers.
+              s=re.sub(r'<html\s+lang=["\'][^"\']+["\']',f'<html lang="{langs[lang]["html_lang"]}"',s,count=1,flags=re.I)
+              s=re.sub(r'<title>.*?</title>',f'<title>{langs[lang]["title"]}</title>',s,count=1,flags=re.I|re.S)
+              s=re.sub(r'<meta\s+content=["\'][^"\']*["\']\s+name=["\']description["\']\s*/?>',f'<meta content="{langs[lang]["description"]}" name="description"/>',s,count=1,flags=re.I)
+              marker='<link rel="icon"'
+              pos=s.find(marker)
+              if pos < 0: raise RuntimeError(f'icon marker not found in {fp}')
+              s=s[:pos]+seo_block(lang,canonical)+s[pos:]
+              p.write_text(s,encoding='utf-8')
+
+          # robots.txt
+          Path('robots.txt').write_text(
+              'User-agent: *\nAllow: /\n\nSitemap: https://www.concordhouse.us/sitemap.xml\n',
+              encoding='utf-8'
+          )
+
+          # Multilingual sitemap. Canonicals deliberately omit trailing slashes because Vercel has trailingSlash=false.
+          xhtml='http://www.w3.org/1999/xhtml'
+          sm='http://www.sitemaps.org/schemas/sitemap/0.9'
+          ET.register_namespace('',sm); ET.register_namespace('xhtml',xhtml)
+          urlset=ET.Element('{%s}urlset'%sm)
+          for lang,d in langs.items():
+              u=ET.SubElement(urlset,'{%s}url'%sm)
+              ET.SubElement(u,'{%s}loc'%sm).text=d['url']
+              ET.SubElement(u,'{%s}lastmod'%sm).text='2026-09-10'
+              for code,target in [('en',f'{domain}/en'),('ru',f'{domain}/ru'),('ky',f'{domain}/ky'),('x-default',f'{domain}/en')]:
+                  ET.SubElement(u,'{%s}link'%xhtml,{'rel':'alternate','hreflang':code,'href':target})
+          ET.ElementTree(urlset).write('sitemap.xml',encoding='utf-8',xml_declaration=True)
+
+          # Vercel: make the root URL a permanent redirect to the English canonical.
+          vp=Path('vercel.json'); cfg=json.loads(vp.read_text(encoding='utf-8'))
+          redirects=[r for r in cfg.get('redirects',[]) if r.get('source')!='/']
+          redirects.insert(0,{'source':'/','destination':'/en','permanent':True})
+          cfg['redirects']=redirects
+          vp.write_text(json.dumps(cfg,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+
+          # QA
+          assert 'Sitemap: https://www.concordhouse.us/sitemap.xml' in Path('robots.txt').read_text()
+          ET.parse('sitemap.xml')
+          for fp,lang,canonical in pages:
+              s=Path(fp).read_text(encoding='utf-8')
+              assert s.count('rel="canonical"')==1, fp
+              assert f'rel="canonical" href="{canonical}"' in s, fp
+              assert s.count('hreflang="en"')==1 and s.count('hreflang="ru"')==1 and s.count('hreflang="ky"')==1 and s.count('hreflang="x-default"')==1, fp
+              assert f'property="og:url" content="{canonical}"' in s, fp
+              m=re.search(r'<script type="application/ld\+json" id="ch-website-schema">(.*?)</script>',s,re.S)
+              assert m and json.loads(m.group(1))['url']==canonical, fp
+              assert 'name="robots"' in s and 'index,follow' in s, fp
+          assert json.loads(Path('vercel.json').read_text())['redirects'][0]['destination']=='/en'
+          print('SEO indexing package QA passed')
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, subprocess, tempfile
+          for fp in ['index.html','en/index.html','ru/index.html','ky/index.html']:
+              s=Path(fp).read_text(encoding='utf-8')
+              scripts=re.findall(r'<script(?![^>]*type=["\']application/ld\+json["\'])[^>]*>([\s\S]*?)</script>',s,re.I)
+              for i,code in enumerate(scripts):
+                  if not code.strip(): continue
+                  t=Path(tempfile.gettempdir())/('seo-'+fp.replace('/','-')+f'-{i}.js')
+                  t.write_text(code,encoding='utf-8')
+                  r=subprocess.run(['node','--check',str(t)],capture_output=True,text=True)
+                  if r.returncode: raise RuntimeError(f'{fp} script {i}: {r.stderr}')
+          print('Inline JavaScript syntax OK')
+          PY
+      - name: Commit SEO preview
+        run: |
+          rm -f .github/workflows/seo-indexing-preview.yml
+          git config user.name "AdilKaibaliev"
+          git config user.email "156720853+AdilKaibaliev@users.noreply.github.com"
+          git add -A
+          git commit -m "Add technical SEO indexing package"
+          git push
